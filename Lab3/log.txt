@@ -1,0 +1,41 @@
+> # run analysis
+> library(ahp)
+> ahpFile <- system.file("extdata", "cam2.ahp", package="ahp")
+> carAhp <- Load(ahpFile)
+> Calculate(carAhp)
+> Visualize(carAhp)
+> Analyze(carAhp)
+                   Weight Sony Alpha a6000 Fujifilm X-A10
+1 Wybor aparatu     96.7%            15.3%          14.8%
+2  ¦--Cena          37.9%             6.4%           6.5%
+3  ¦--Jakosc zdjec  36.9%             5.5%           2.7%
+4  ¦--Jakosc wideo  18.6%             2.9%           4.7%
+5  °--Wyglad         3.4%             0.5%           0.9%
+  Sony Alpha a5100 Panasonic DCGH5S Panasonic Lumix DMCG7
+1            10.8%            10.0%                  7.1%
+2             3.3%             6.2%                  2.8%
+3             4.9%             1.2%                  2.4%
+4             2.2%             2.2%                  1.7%
+5             0.4%             0.4%                  0.3%
+  Sony Alpha a7K Sony Alpha a6500 Panasonic Lumix DMCG6 Canon EOS M6
+1           6.7%             6.7%                  6.0%         5.2%
+2           1.6%             2.1%                  2.5%         1.4%
+3           4.3%             3.9%                  2.1%         3.4%
+4           0.7%             0.6%                  1.2%         0.4%
+5           0.1%             0.1%                  0.2%         0.1%
+  Panasonic Lumix DMC Panasonic Lumix DMCGX800K
+1                4.8%                      4.7%
+2                2.2%                      1.2%
+3                1.9%                      3.0%
+4                0.7%                      0.5%
+5                0.1%                      0.1%
+  Panasonic Lumix DMCGX80 Inconsistency
+1                    4.4%          1.2%
+2                    1.7%         12.6%
+3                    1.7%          3.9%
+4                    0.9%         18.9%
+5                    0.2%         18.9%
+> AnalyzeTable(carAhp)
+> AnalyzeTable(carAhp, decisionMaker = "Father")
+> AnalyzeTable(carAhp, decisionMaker = "Mother")
+> AnalyzeTable(carAhp, decisionMaker = "Child")

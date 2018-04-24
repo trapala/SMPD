@@ -1,0 +1,619 @@
+Version: 2.0
+
+#########################
+# Alternatives Section
+#
+
+Alternatives: &alternatives
+# Here, we list all the alternatives, together with their attributes. 
+# We can use these attributes later in the file when defining 
+# preferenceFunctions. The attributes can be quantitative or 
+# qualitative.
+    Sony Alpha a6000:
+        cena: 2499
+        rozdzielczosc: 24.3
+        maxCzulosc: 25600
+        minCzulosc: 100
+    Fujifilm X-A10:
+        cena: 1699
+        rozdzielczosc: 16.3
+        maxCzulosc: 25600
+        minCzulosc: 100
+    Panasonic DCGH5S:
+        cena: 10149
+        rozdzielczosc: 10.2
+        maxCzulosc: 51200
+        minCzulosc: 160
+    Sony Alpha a5100:
+        cena: 1999
+        rozdzielczosc: 24.3
+        maxCzulosc: 25600
+        minCzulosc: 100
+    Panasonic Lumix DMCG7:
+        cena: 2799
+        rozdzielczosc: 16
+        maxCzulosc: 25600
+        minCzulosc: 200
+    Panasonic Lumix DMCG6:
+        cena: 2399
+        rozdzielczosc: 16
+        maxCzulosc: 25600
+        minCzulosc: 200
+    Panasonic Lumix DMC:
+        cena: 3799
+        rozdzielczosc: 16
+        maxCzulosc: 25600
+        minCzulosc: 200
+    Sony Alpha a6500:
+        cena: 6259
+        rozdzielczosc: 24.2
+        maxCzulosc: 51200
+        minCzulosc: 100
+    Panasonic Lumix DMCGX80:
+        cena: 2549
+        rozdzielczosc: 16
+        maxCzulosc: 25600
+        minCzulosc: 200
+    Sony Alpha a7K:
+        cena: 3999
+        rozdzielczosc: 24.3
+        maxCzulosc: 25600
+        minCzulosc: 100
+    Canon EOS M6:
+        cena: 2495
+        rozdzielczosc: 24.2
+        maxCzulosc: 25600
+        minCzulosc: 100
+    Panasonic Lumix DMCGX800K:
+        cena: 1899
+        rozdzielczosc: 16.84
+        maxCzulosc: 25600
+        minCzulosc: 100
+Goal:
+  name: Wybor aparatu
+  description: >
+    Camera Description
+  author: Szymon Holisz
+  decision-makers:
+    - Father: 0.4
+    - Mother: 0.4
+    - Child: 0.2
+  preferences:
+    Father:
+      pairwise:
+        - [Cena, Jakosc zdjec, 1]
+        - [Cena, Wyglad,  9]
+        - [Cena, Jakosc wideo, 2]
+        - [Jakosc zdjec, Wyglad, 8]
+        - [Jakosc zdjec, Jakosc wideo, 2]
+        - [Wyglad, Jakosc wideo, 1/7]
+    Mother:
+      pairwise:
+        - [Cena, Jakosc zdjec, 5]
+        - [Cena, Wyglad,  3]
+        - [Cena, Jakosc wideo, 2]
+        - [Jakosc zdjec, Wyglad, 5]
+        - [Jakosc zdjec, Jakosc wideo, 2]
+        - [Wyglad, Jakosc wideo, 1/3]
+    Child:
+      pairwise:
+        - [Cena, Jakosc zdjec, 9]
+        - [Cena, Wyglad,  9]
+        - [Cena, Jakosc wideo, 2]
+        - [Jakosc zdjec, Wyglad, 1]
+        - [Jakosc zdjec, Jakosc wideo, 6]
+        - [Wyglad, Jakosc wideo, 1/5]
+  children:
+    Cena:
+      preferences:
+        Father:
+          pairwiseFunction: >
+            GetResalePreference <- function(a1, a2) {
+              if (a1$`cena` < a2$`cena`) return (GetResalePreference(a2, a1))
+              ratio <- a1$`cena` / a2$`cena`
+              if (ratio < 1) return (1)
+              if (ratio < 2) return (2)
+              if (ratio < 3) return (3)
+              if (ratio < 4) return (4)
+              if (ratio < 5) return (5)
+              if (ratio < 6) return (6)
+              if (ratio < 7) return (7)
+              return (8)
+              }
+        Mother:
+          pairwiseFunction: >
+            GetResalePreference <- function(a1, a2) {
+              if (a1$`cena` < a2$`cena`) return (GetResalePreference(a2, a1))
+              ratio <- a1$`cena` / a2$`cena`
+              if (ratio < 1) return (1)
+              if (ratio < 2) return (2)
+              if (ratio < 3) return (3)
+              if (ratio < 4) return (4)
+              if (ratio < 5) return (5)
+              if (ratio < 6) return (6)
+              if (ratio < 7) return (7)
+              return (8)
+              }
+        Child:
+          pairwiseFunction: >
+            GetResalePreference <- function(a1, a2) {
+              if (a1$`cena` < a2$`cena`) return (GetResalePreference(a2, a1))
+              ratio <- a1$`cena` / a2$`cena`
+              if (ratio < 1) return (1)
+              if (ratio < 2) return (2)
+              if (ratio < 3) return (3)
+              if (ratio < 4) return (4)
+              if (ratio < 5) return (5)
+              if (ratio < 6) return (6)
+              if (ratio < 7) return (7)
+              return (8)
+              }
+      children: *alternatives
+    Jakosc zdjec:
+      preferences:
+        Father:
+          pairwiseFunction: >
+            GetResalePreference <- function(a1, a2) {
+              if (a1$`rozdzielczosc` < a2$`rozdzielczosc`) return (1/GetResalePreference(a2, a1))
+              ratio <- a1$`rozdzielczosc` / a2$`rozdzielczosc`
+              if (ratio < 1) return (1)
+              if (ratio < 2) return (2)
+              if (ratio < 3) return (3)
+              if (ratio < 4) return (4)
+              if (ratio < 5) return (5)
+              return (6)
+              }
+        Mother:
+          pairwiseFunction: >
+            GetResalePreference <- function(a1, a2) {
+              if (a1$`rozdzielczosc` < a2$`rozdzielczosc`) return (1/GetResalePreference(a2, a1))
+              ratio <- a1$`rozdzielczosc` / a2$`rozdzielczosc`
+              if (ratio < 1) return (1)
+              if (ratio < 2) return (2)
+              if (ratio < 3) return (3)
+              if (ratio < 4) return (4)
+              if (ratio < 5) return (5)
+              return (6)
+              }
+        Child:
+          pairwiseFunction: >
+            GetResalePreference <- function(a1, a2) {
+              if (a1$`rozdzielczosc` < a2$`rozdzielczosc`) return (1/GetResalePreference(a2, a1))
+              ratio <- a1$`rozdzielczosc` / a2$`rozdzielczosc`
+              if (ratio < 1) return (1)
+              if (ratio < 2) return (2)
+              if (ratio < 3) return (3)
+              if (ratio < 4) return (4)
+              if (ratio < 5) return (5)
+              return (6)
+              }
+      children: *alternatives
+    Jakosc wideo:
+      preferences:
+        Father:
+          pairwise:
+            - [Sony Alpha a6000, Fujifilm X-A10, 1/6]
+            - [Sony Alpha a6000, Panasonic DCGH5S, 5]
+            - [Sony Alpha a6000, Sony Alpha a5100, 4]
+            - [Sony Alpha a6000, Panasonic Lumix DMCG7, 5]
+            - [Sony Alpha a6000, Panasonic Lumix DMCG6, 2]
+            - [Sony Alpha a6000, Panasonic Lumix DMC, 3]
+            - [Sony Alpha a6000, Sony Alpha a6500, 4]
+            - [Sony Alpha a6000, Panasonic Lumix DMCGX80, 5]
+            - [Sony Alpha a6000, Sony Alpha a7K, 5]
+            - [Sony Alpha a6000, Canon EOS M6, 4]
+            - [Sony Alpha a6000, Panasonic Lumix DMCGX800K, 4]
+            - [Fujifilm X-A10, Panasonic DCGH5S, 3]
+            - [Fujifilm X-A10, Sony Alpha a5100, 5]
+            - [Fujifilm X-A10, Panasonic Lumix DMCG7, 6]
+            - [Fujifilm X-A10, Panasonic Lumix DMCG6, 7]
+            - [Fujifilm X-A10, Panasonic Lumix DMC, 8]
+            - [Fujifilm X-A10, Sony Alpha a6500, 9]
+            - [Fujifilm X-A10, Panasonic Lumix DMCGX80, 5]
+            - [Fujifilm X-A10, Sony Alpha a7K, 6]
+            - [Fujifilm X-A10, Canon EOS M6, 5]
+            - [Fujifilm X-A10, Panasonic Lumix DMCGX800K, 4]
+            - [Panasonic DCGH5S, Sony Alpha a5100, 3]
+            - [Panasonic DCGH5S, Panasonic Lumix DMCG7, 5]
+            - [Panasonic DCGH5S, Panasonic Lumix DMCG6, 3]
+            - [Panasonic DCGH5S, Panasonic Lumix DMC, 5]
+            - [Panasonic DCGH5S, Sony Alpha a6500, 1]
+            - [Panasonic DCGH5S, Panasonic Lumix DMCGX80, 4]
+            - [Panasonic DCGH5S, Sony Alpha a7K, 3]
+            - [Panasonic DCGH5S, Canon EOS M6, 5]
+            - [Panasonic DCGH5S, Panasonic Lumix DMCGX800K, 3]
+            - [Sony Alpha a5100, Panasonic Lumix DMCG7, 5]
+            - [Sony Alpha a5100, Panasonic Lumix DMCG6, 6]
+            - [Sony Alpha a5100, Panasonic Lumix DMC, 4]
+            - [Sony Alpha a5100, Sony Alpha a6500, 6]
+            - [Sony Alpha a5100, Panasonic Lumix DMCGX80, 3]
+            - [Sony Alpha a5100, Sony Alpha a7K, 5]
+            - [Sony Alpha a5100, Canon EOS M6, 6]
+            - [Sony Alpha a5100, Panasonic Lumix DMCGX800K, 4]
+            - [Panasonic Lumix DMCG7, Panasonic Lumix DMCG6, 6]
+            - [Panasonic Lumix DMCG7, Panasonic Lumix DMC, 4]
+            - [Panasonic Lumix DMCG7, Sony Alpha a6500, 4]
+            - [Panasonic Lumix DMCG7, Panasonic Lumix DMCGX80, 4]
+            - [Panasonic Lumix DMCG7, Sony Alpha a7K, 4]
+            - [Panasonic Lumix DMCG7, Canon EOS M6, 6]
+            - [Panasonic Lumix DMCG7, Panasonic Lumix DMCGX800K, 4]
+            - [Panasonic Lumix DMCG6, Panasonic Lumix DMC, 5]
+            - [Panasonic Lumix DMCG6, Sony Alpha a6500, 6]
+            - [Panasonic Lumix DMCG6, Panasonic Lumix DMCGX80, 3]
+            - [Panasonic Lumix DMCG6, Sony Alpha a7K, 4]
+            - [Panasonic Lumix DMCG6, Canon EOS M6, 3]
+            - [Panasonic Lumix DMCG6, Panasonic Lumix DMCGX800K, 1]
+            - [Panasonic Lumix DMC, Sony Alpha a6500, 1]
+            - [Panasonic Lumix DMC, Panasonic Lumix DMCGX80, 2]
+            - [Panasonic Lumix DMC, Sony Alpha a7K, 1]
+            - [Panasonic Lumix DMC, Canon EOS M6, 4]
+            - [Panasonic Lumix DMC, Panasonic Lumix DMCGX800K, 1]
+            - [Sony a6500, Panasonic Lumix DMCGX80, 5]
+            - [Sony a6500, Sony Alpha a7K, 3]
+            - [Sony a6500, Canon EOS M6, 5]
+            - [Sony a6500, Panasonic Lumix DMCGX800K, 3]
+            - [Panasonic Lumix DMCGX80, Sony Alpha a7k, 5]
+            - [Panasonic Lumix DMCGX80, Canon EOS M6, 5]
+            - [Panasonic Lumix DMCGX80, Panasonic Lumix DMCGX800K, 3]
+            - [Sony Alpha a7K, Canon EOS M6, 5]
+            - [Sony Alpha a7K, Panasonic Lumix DMCGX800K, 6]
+        Mother:
+          pairwise:
+            - [Sony Alpha a6000, Fujifilm X-A10, 1/6]
+            - [Sony Alpha a6000, Panasonic DCGH5S, 5]
+            - [Sony Alpha a6000, Sony Alpha a5100, 4]
+            - [Sony Alpha a6000, Panasonic Lumix DMCG7, 5]
+            - [Sony Alpha a6000, Panasonic Lumix DMCG6, 2]
+            - [Sony Alpha a6000, Panasonic Lumix DMC, 3]
+            - [Sony Alpha a6000, Sony Alpha a6500, 4]
+            - [Sony Alpha a6000, Panasonic Lumix DMCGX80, 5]
+            - [Sony Alpha a6000, Sony Alpha a7K, 5]
+            - [Sony Alpha a6000, Canon EOS M6, 4]
+            - [Sony Alpha a6000, Panasonic Lumix DMCGX800K, 4]
+            - [Fujifilm X-A10, Panasonic DCGH5S, 3]
+            - [Fujifilm X-A10, Sony Alpha a5100, 5]
+            - [Fujifilm X-A10, Panasonic Lumix DMCG7, 6]
+            - [Fujifilm X-A10, Panasonic Lumix DMCG6, 7]
+            - [Fujifilm X-A10, Panasonic Lumix DMC, 8]
+            - [Fujifilm X-A10, Sony Alpha a6500, 9]
+            - [Fujifilm X-A10, Panasonic Lumix DMCGX80, 5]
+            - [Fujifilm X-A10, Sony Alpha a7K, 6]
+            - [Fujifilm X-A10, Canon EOS M6, 5]
+            - [Fujifilm X-A10, Panasonic Lumix DMCGX800K, 4]
+            - [Panasonic DCGH5S, Sony Alpha a5100, 3]
+            - [Panasonic DCGH5S, Panasonic Lumix DMCG7, 5]
+            - [Panasonic DCGH5S, Panasonic Lumix DMCG6, 3]
+            - [Panasonic DCGH5S, Panasonic Lumix DMC, 5]
+            - [Panasonic DCGH5S, Sony Alpha a6500, 1]
+            - [Panasonic DCGH5S, Panasonic Lumix DMCGX80, 4]
+            - [Panasonic DCGH5S, Sony Alpha a7K, 3]
+            - [Panasonic DCGH5S, Canon EOS M6, 5]
+            - [Panasonic DCGH5S, Panasonic Lumix DMCGX800K, 3]
+            - [Sony Alpha a5100, Panasonic Lumix DMCG7, 5]
+            - [Sony Alpha a5100, Panasonic Lumix DMCG6, 6]
+            - [Sony Alpha a5100, Panasonic Lumix DMC, 4]
+            - [Sony Alpha a5100, Sony Alpha a6500, 6]
+            - [Sony Alpha a5100, Panasonic Lumix DMCGX80, 3]
+            - [Sony Alpha a5100, Sony Alpha a7K, 5]
+            - [Sony Alpha a5100, Canon EOS M6, 6]
+            - [Sony Alpha a5100, Panasonic Lumix DMCGX800K, 4]
+            - [Panasonic Lumix DMCG7, Panasonic Lumix DMCG6, 6]
+            - [Panasonic Lumix DMCG7, Panasonic Lumix DMC, 4]
+            - [Panasonic Lumix DMCG7, Sony Alpha a6500, 4]
+            - [Panasonic Lumix DMCG7, Panasonic Lumix DMCGX80, 4]
+            - [Panasonic Lumix DMCG7, Sony Alpha a7K, 4]
+            - [Panasonic Lumix DMCG7, Canon EOS M6, 6]
+            - [Panasonic Lumix DMCG7, Panasonic Lumix DMCGX800K, 4]
+            - [Panasonic Lumix DMCG6, Panasonic Lumix DMC, 5]
+            - [Panasonic Lumix DMCG6, Sony Alpha a6500, 6]
+            - [Panasonic Lumix DMCG6, Panasonic Lumix DMCGX80, 3]
+            - [Panasonic Lumix DMCG6, Sony Alpha a7K, 4]
+            - [Panasonic Lumix DMCG6, Canon EOS M6, 3]
+            - [Panasonic Lumix DMCG6, Panasonic Lumix DMCGX800K, 1]
+            - [Panasonic Lumix DMC, Sony Alpha a6500, 1]
+            - [Panasonic Lumix DMC, Panasonic Lumix DMCGX80, 2]
+            - [Panasonic Lumix DMC, Sony Alpha a7K, 1]
+            - [Panasonic Lumix DMC, Canon EOS M6, 4]
+            - [Panasonic Lumix DMC, Panasonic Lumix DMCGX800K, 1]
+            - [Sony a6500, Panasonic Lumix DMCGX80, 5]
+            - [Sony a6500, Sony Alpha a7K, 3]
+            - [Sony a6500, Canon EOS M6, 5]
+            - [Sony a6500, Panasonic Lumix DMCGX800K, 3]
+            - [Panasonic Lumix DMCGX80, Sony Alpha a7k, 5]
+            - [Panasonic Lumix DMCGX80, Canon EOS M6, 5]
+            - [Panasonic Lumix DMCGX80, Panasonic Lumix DMCGX800K, 3]
+            - [Sony Alpha a7K, Canon EOS M6, 5]
+            - [Sony Alpha a7K, Panasonic Lumix DMCGX800K, 6]
+        Child:
+          pairwise:
+            - [Sony Alpha a6000, Fujifilm X-A10, 1/6]
+            - [Sony Alpha a6000, Panasonic DCGH5S, 5]
+            - [Sony Alpha a6000, Sony Alpha a5100, 4]
+            - [Sony Alpha a6000, Panasonic Lumix DMCG7, 5]
+            - [Sony Alpha a6000, Panasonic Lumix DMCG6, 2]
+            - [Sony Alpha a6000, Panasonic Lumix DMC, 3]
+            - [Sony Alpha a6000, Sony Alpha a6500, 4]
+            - [Sony Alpha a6000, Panasonic Lumix DMCGX80, 5]
+            - [Sony Alpha a6000, Sony Alpha a7K, 5]
+            - [Sony Alpha a6000, Canon EOS M6, 4]
+            - [Sony Alpha a6000, Panasonic Lumix DMCGX800K, 4]
+            - [Fujifilm X-A10, Panasonic DCGH5S, 3]
+            - [Fujifilm X-A10, Sony Alpha a5100, 5]
+            - [Fujifilm X-A10, Panasonic Lumix DMCG7, 6]
+            - [Fujifilm X-A10, Panasonic Lumix DMCG6, 7]
+            - [Fujifilm X-A10, Panasonic Lumix DMC, 8]
+            - [Fujifilm X-A10, Sony Alpha a6500, 9]
+            - [Fujifilm X-A10, Panasonic Lumix DMCGX80, 5]
+            - [Fujifilm X-A10, Sony Alpha a7K, 6]
+            - [Fujifilm X-A10, Canon EOS M6, 5]
+            - [Fujifilm X-A10, Panasonic Lumix DMCGX800K, 4]
+            - [Panasonic DCGH5S, Sony Alpha a5100, 3]
+            - [Panasonic DCGH5S, Panasonic Lumix DMCG7, 5]
+            - [Panasonic DCGH5S, Panasonic Lumix DMCG6, 3]
+            - [Panasonic DCGH5S, Panasonic Lumix DMC, 5]
+            - [Panasonic DCGH5S, Sony Alpha a6500, 1]
+            - [Panasonic DCGH5S, Panasonic Lumix DMCGX80, 4]
+            - [Panasonic DCGH5S, Sony Alpha a7K, 3]
+            - [Panasonic DCGH5S, Canon EOS M6, 5]
+            - [Panasonic DCGH5S, Panasonic Lumix DMCGX800K, 3]
+            - [Sony Alpha a5100, Panasonic Lumix DMCG7, 5]
+            - [Sony Alpha a5100, Panasonic Lumix DMCG6, 6]
+            - [Sony Alpha a5100, Panasonic Lumix DMC, 4]
+            - [Sony Alpha a5100, Sony Alpha a6500, 6]
+            - [Sony Alpha a5100, Panasonic Lumix DMCGX80, 3]
+            - [Sony Alpha a5100, Sony Alpha a7K, 5]
+            - [Sony Alpha a5100, Canon EOS M6, 6]
+            - [Sony Alpha a5100, Panasonic Lumix DMCGX800K, 4]
+            - [Panasonic Lumix DMCG7, Panasonic Lumix DMCG6, 6]
+            - [Panasonic Lumix DMCG7, Panasonic Lumix DMC, 4]
+            - [Panasonic Lumix DMCG7, Sony Alpha a6500, 4]
+            - [Panasonic Lumix DMCG7, Panasonic Lumix DMCGX80, 4]
+            - [Panasonic Lumix DMCG7, Sony Alpha a7K, 4]
+            - [Panasonic Lumix DMCG7, Canon EOS M6, 6]
+            - [Panasonic Lumix DMCG7, Panasonic Lumix DMCGX800K, 4]
+            - [Panasonic Lumix DMCG6, Panasonic Lumix DMC, 5]
+            - [Panasonic Lumix DMCG6, Sony Alpha a6500, 6]
+            - [Panasonic Lumix DMCG6, Panasonic Lumix DMCGX80, 3]
+            - [Panasonic Lumix DMCG6, Sony Alpha a7K, 4]
+            - [Panasonic Lumix DMCG6, Canon EOS M6, 3]
+            - [Panasonic Lumix DMCG6, Panasonic Lumix DMCGX800K, 1]
+            - [Panasonic Lumix DMC, Sony Alpha a6500, 1]
+            - [Panasonic Lumix DMC, Panasonic Lumix DMCGX80, 2]
+            - [Panasonic Lumix DMC, Sony Alpha a7K, 1]
+            - [Panasonic Lumix DMC, Canon EOS M6, 4]
+            - [Panasonic Lumix DMC, Panasonic Lumix DMCGX800K, 1]
+            - [Sony a6500, Panasonic Lumix DMCGX80, 5]
+            - [Sony a6500, Sony Alpha a7K, 3]
+            - [Sony a6500, Canon EOS M6, 5]
+            - [Sony a6500, Panasonic Lumix DMCGX800K, 3]
+            - [Panasonic Lumix DMCGX80, Sony Alpha a7k, 5]
+            - [Panasonic Lumix DMCGX80, Canon EOS M6, 5]
+            - [Panasonic Lumix DMCGX80, Panasonic Lumix DMCGX800K, 3]
+            - [Sony Alpha a7K, Canon EOS M6, 5]
+            - [Sony Alpha a7K, Panasonic Lumix DMCGX800K, 6]
+
+      children: *alternatives
+    Wyglad:
+      preferences:
+        Father:
+          pairwise:
+            - [Sony Alpha a6000, Fujifilm X-A10, 1/6]
+            - [Sony Alpha a6000, Panasonic DCGH5S, 5]
+            - [Sony Alpha a6000, Sony Alpha a5100, 4]
+            - [Sony Alpha a6000, Panasonic Lumix DMCG7, 5]
+            - [Sony Alpha a6000, Panasonic Lumix DMCG6, 2]
+            - [Sony Alpha a6000, Panasonic Lumix DMC, 3]
+            - [Sony Alpha a6000, Sony Alpha a6500, 4]
+            - [Sony Alpha a6000, Panasonic Lumix DMCGX80, 5]
+            - [Sony Alpha a6000, Sony Alpha a7K, 5]
+            - [Sony Alpha a6000, Canon EOS M6, 4]
+            - [Sony Alpha a6000, Panasonic Lumix DMCGX800K, 4]
+            - [Fujifilm X-A10, Panasonic DCGH5S, 3]
+            - [Fujifilm X-A10, Sony Alpha a5100, 5]
+            - [Fujifilm X-A10, Panasonic Lumix DMCG7, 6]
+            - [Fujifilm X-A10, Panasonic Lumix DMCG6, 7]
+            - [Fujifilm X-A10, Panasonic Lumix DMC, 8]
+            - [Fujifilm X-A10, Sony Alpha a6500, 9]
+            - [Fujifilm X-A10, Panasonic Lumix DMCGX80, 5]
+            - [Fujifilm X-A10, Sony Alpha a7K, 6]
+            - [Fujifilm X-A10, Canon EOS M6, 5]
+            - [Fujifilm X-A10, Panasonic Lumix DMCGX800K, 4]
+            - [Panasonic DCGH5S, Sony Alpha a5100, 3]
+            - [Panasonic DCGH5S, Panasonic Lumix DMCG7, 5]
+            - [Panasonic DCGH5S, Panasonic Lumix DMCG6, 3]
+            - [Panasonic DCGH5S, Panasonic Lumix DMC, 5]
+            - [Panasonic DCGH5S, Sony Alpha a6500, 1]
+            - [Panasonic DCGH5S, Panasonic Lumix DMCGX80, 4]
+            - [Panasonic DCGH5S, Sony Alpha a7K, 3]
+            - [Panasonic DCGH5S, Canon EOS M6, 5]
+            - [Panasonic DCGH5S, Panasonic Lumix DMCGX800K, 3]
+            - [Sony Alpha a5100, Panasonic Lumix DMCG7, 5]
+            - [Sony Alpha a5100, Panasonic Lumix DMCG6, 6]
+            - [Sony Alpha a5100, Panasonic Lumix DMC, 4]
+            - [Sony Alpha a5100, Sony Alpha a6500, 6]
+            - [Sony Alpha a5100, Panasonic Lumix DMCGX80, 3]
+            - [Sony Alpha a5100, Sony Alpha a7K, 5]
+            - [Sony Alpha a5100, Canon EOS M6, 6]
+            - [Sony Alpha a5100, Panasonic Lumix DMCGX800K, 4]
+            - [Panasonic Lumix DMCG7, Panasonic Lumix DMCG6, 6]
+            - [Panasonic Lumix DMCG7, Panasonic Lumix DMC, 4]
+            - [Panasonic Lumix DMCG7, Sony Alpha a6500, 4]
+            - [Panasonic Lumix DMCG7, Panasonic Lumix DMCGX80, 4]
+            - [Panasonic Lumix DMCG7, Sony Alpha a7K, 4]
+            - [Panasonic Lumix DMCG7, Canon EOS M6, 6]
+            - [Panasonic Lumix DMCG7, Panasonic Lumix DMCGX800K, 4]
+            - [Panasonic Lumix DMCG6, Panasonic Lumix DMC, 5]
+            - [Panasonic Lumix DMCG6, Sony Alpha a6500, 6]
+            - [Panasonic Lumix DMCG6, Panasonic Lumix DMCGX80, 3]
+            - [Panasonic Lumix DMCG6, Sony Alpha a7K, 4]
+            - [Panasonic Lumix DMCG6, Canon EOS M6, 3]
+            - [Panasonic Lumix DMCG6, Panasonic Lumix DMCGX800K, 1]
+            - [Panasonic Lumix DMC, Sony Alpha a6500, 1]
+            - [Panasonic Lumix DMC, Panasonic Lumix DMCGX80, 2]
+            - [Panasonic Lumix DMC, Sony Alpha a7K, 1]
+            - [Panasonic Lumix DMC, Canon EOS M6, 4]
+            - [Panasonic Lumix DMC, Panasonic Lumix DMCGX800K, 1]
+            - [Sony a6500, Panasonic Lumix DMCGX80, 5]
+            - [Sony a6500, Sony Alpha a7K, 3]
+            - [Sony a6500, Canon EOS M6, 5]
+            - [Sony a6500, Panasonic Lumix DMCGX800K, 3]
+            - [Panasonic Lumix DMCGX80, Sony Alpha a7k, 5]
+            - [Panasonic Lumix DMCGX80, Canon EOS M6, 5]
+            - [Panasonic Lumix DMCGX80, Panasonic Lumix DMCGX800K, 3]
+            - [Sony Alpha a7K, Canon EOS M6, 5]
+            - [Sony Alpha a7K, Panasonic Lumix DMCGX800K, 6]
+        Mother:
+          pairwise:
+            - [Sony Alpha a6000, Fujifilm X-A10, 1/6]
+            - [Sony Alpha a6000, Panasonic DCGH5S, 5]
+            - [Sony Alpha a6000, Sony Alpha a5100, 4]
+            - [Sony Alpha a6000, Panasonic Lumix DMCG7, 5]
+            - [Sony Alpha a6000, Panasonic Lumix DMCG6, 2]
+            - [Sony Alpha a6000, Panasonic Lumix DMC, 3]
+            - [Sony Alpha a6000, Sony Alpha a6500, 4]
+            - [Sony Alpha a6000, Panasonic Lumix DMCGX80, 5]
+            - [Sony Alpha a6000, Sony Alpha a7K, 5]
+            - [Sony Alpha a6000, Canon EOS M6, 4]
+            - [Sony Alpha a6000, Panasonic Lumix DMCGX800K, 4]
+            - [Fujifilm X-A10, Panasonic DCGH5S, 3]
+            - [Fujifilm X-A10, Sony Alpha a5100, 5]
+            - [Fujifilm X-A10, Panasonic Lumix DMCG7, 6]
+            - [Fujifilm X-A10, Panasonic Lumix DMCG6, 7]
+            - [Fujifilm X-A10, Panasonic Lumix DMC, 8]
+            - [Fujifilm X-A10, Sony Alpha a6500, 9]
+            - [Fujifilm X-A10, Panasonic Lumix DMCGX80, 5]
+            - [Fujifilm X-A10, Sony Alpha a7K, 6]
+            - [Fujifilm X-A10, Canon EOS M6, 5]
+            - [Fujifilm X-A10, Panasonic Lumix DMCGX800K, 4]
+            - [Panasonic DCGH5S, Sony Alpha a5100, 3]
+            - [Panasonic DCGH5S, Panasonic Lumix DMCG7, 5]
+            - [Panasonic DCGH5S, Panasonic Lumix DMCG6, 3]
+            - [Panasonic DCGH5S, Panasonic Lumix DMC, 5]
+            - [Panasonic DCGH5S, Sony Alpha a6500, 1]
+            - [Panasonic DCGH5S, Panasonic Lumix DMCGX80, 4]
+            - [Panasonic DCGH5S, Sony Alpha a7K, 3]
+            - [Panasonic DCGH5S, Canon EOS M6, 5]
+            - [Panasonic DCGH5S, Panasonic Lumix DMCGX800K, 3]
+            - [Sony Alpha a5100, Panasonic Lumix DMCG7, 5]
+            - [Sony Alpha a5100, Panasonic Lumix DMCG6, 6]
+            - [Sony Alpha a5100, Panasonic Lumix DMC, 4]
+            - [Sony Alpha a5100, Sony Alpha a6500, 6]
+            - [Sony Alpha a5100, Panasonic Lumix DMCGX80, 3]
+            - [Sony Alpha a5100, Sony Alpha a7K, 5]
+            - [Sony Alpha a5100, Canon EOS M6, 6]
+            - [Sony Alpha a5100, Panasonic Lumix DMCGX800K, 4]
+            - [Panasonic Lumix DMCG7, Panasonic Lumix DMCG6, 6]
+            - [Panasonic Lumix DMCG7, Panasonic Lumix DMC, 4]
+            - [Panasonic Lumix DMCG7, Sony Alpha a6500, 4]
+            - [Panasonic Lumix DMCG7, Panasonic Lumix DMCGX80, 4]
+            - [Panasonic Lumix DMCG7, Sony Alpha a7K, 4]
+            - [Panasonic Lumix DMCG7, Canon EOS M6, 6]
+            - [Panasonic Lumix DMCG7, Panasonic Lumix DMCGX800K, 4]
+            - [Panasonic Lumix DMCG6, Panasonic Lumix DMC, 5]
+            - [Panasonic Lumix DMCG6, Sony Alpha a6500, 6]
+            - [Panasonic Lumix DMCG6, Panasonic Lumix DMCGX80, 3]
+            - [Panasonic Lumix DMCG6, Sony Alpha a7K, 4]
+            - [Panasonic Lumix DMCG6, Canon EOS M6, 3]
+            - [Panasonic Lumix DMCG6, Panasonic Lumix DMCGX800K, 1]
+            - [Panasonic Lumix DMC, Sony Alpha a6500, 1]
+            - [Panasonic Lumix DMC, Panasonic Lumix DMCGX80, 2]
+            - [Panasonic Lumix DMC, Sony Alpha a7K, 1]
+            - [Panasonic Lumix DMC, Canon EOS M6, 4]
+            - [Panasonic Lumix DMC, Panasonic Lumix DMCGX800K, 1]
+            - [Sony a6500, Panasonic Lumix DMCGX80, 5]
+            - [Sony a6500, Sony Alpha a7K, 3]
+            - [Sony a6500, Canon EOS M6, 5]
+            - [Sony a6500, Panasonic Lumix DMCGX800K, 3]
+            - [Panasonic Lumix DMCGX80, Sony Alpha a7k, 5]
+            - [Panasonic Lumix DMCGX80, Canon EOS M6, 5]
+            - [Panasonic Lumix DMCGX80, Panasonic Lumix DMCGX800K, 3]
+            - [Sony Alpha a7K, Canon EOS M6, 5]
+            - [Sony Alpha a7K, Panasonic Lumix DMCGX800K, 6]
+        Child:
+          pairwise:
+            - [Sony Alpha a6000, Fujifilm X-A10, 1/6]
+            - [Sony Alpha a6000, Panasonic DCGH5S, 5]
+            - [Sony Alpha a6000, Sony Alpha a5100, 4]
+            - [Sony Alpha a6000, Panasonic Lumix DMCG7, 5]
+            - [Sony Alpha a6000, Panasonic Lumix DMCG6, 2]
+            - [Sony Alpha a6000, Panasonic Lumix DMC, 3]
+            - [Sony Alpha a6000, Sony Alpha a6500, 4]
+            - [Sony Alpha a6000, Panasonic Lumix DMCGX80, 5]
+            - [Sony Alpha a6000, Sony Alpha a7K, 5]
+            - [Sony Alpha a6000, Canon EOS M6, 4]
+            - [Sony Alpha a6000, Panasonic Lumix DMCGX800K, 4]
+            - [Fujifilm X-A10, Panasonic DCGH5S, 3]
+            - [Fujifilm X-A10, Sony Alpha a5100, 5]
+            - [Fujifilm X-A10, Panasonic Lumix DMCG7, 6]
+            - [Fujifilm X-A10, Panasonic Lumix DMCG6, 7]
+            - [Fujifilm X-A10, Panasonic Lumix DMC, 8]
+            - [Fujifilm X-A10, Sony Alpha a6500, 9]
+            - [Fujifilm X-A10, Panasonic Lumix DMCGX80, 5]
+            - [Fujifilm X-A10, Sony Alpha a7K, 6]
+            - [Fujifilm X-A10, Canon EOS M6, 5]
+            - [Fujifilm X-A10, Panasonic Lumix DMCGX800K, 4]
+            - [Panasonic DCGH5S, Sony Alpha a5100, 3]
+            - [Panasonic DCGH5S, Panasonic Lumix DMCG7, 5]
+            - [Panasonic DCGH5S, Panasonic Lumix DMCG6, 3]
+            - [Panasonic DCGH5S, Panasonic Lumix DMC, 5]
+            - [Panasonic DCGH5S, Sony Alpha a6500, 1]
+            - [Panasonic DCGH5S, Panasonic Lumix DMCGX80, 4]
+            - [Panasonic DCGH5S, Sony Alpha a7K, 3]
+            - [Panasonic DCGH5S, Canon EOS M6, 5]
+            - [Panasonic DCGH5S, Panasonic Lumix DMCGX800K, 3]
+            - [Sony Alpha a5100, Panasonic Lumix DMCG7, 5]
+            - [Sony Alpha a5100, Panasonic Lumix DMCG6, 6]
+            - [Sony Alpha a5100, Panasonic Lumix DMC, 4]
+            - [Sony Alpha a5100, Sony Alpha a6500, 6]
+            - [Sony Alpha a5100, Panasonic Lumix DMCGX80, 3]
+            - [Sony Alpha a5100, Sony Alpha a7K, 5]
+            - [Sony Alpha a5100, Canon EOS M6, 6]
+            - [Sony Alpha a5100, Panasonic Lumix DMCGX800K, 4]
+            - [Panasonic Lumix DMCG7, Panasonic Lumix DMCG6, 6]
+            - [Panasonic Lumix DMCG7, Panasonic Lumix DMC, 4]
+            - [Panasonic Lumix DMCG7, Sony Alpha a6500, 4]
+            - [Panasonic Lumix DMCG7, Panasonic Lumix DMCGX80, 4]
+            - [Panasonic Lumix DMCG7, Sony Alpha a7K, 4]
+            - [Panasonic Lumix DMCG7, Canon EOS M6, 6]
+            - [Panasonic Lumix DMCG7, Panasonic Lumix DMCGX800K, 4]
+            - [Panasonic Lumix DMCG6, Panasonic Lumix DMC, 5]
+            - [Panasonic Lumix DMCG6, Sony Alpha a6500, 6]
+            - [Panasonic Lumix DMCG6, Panasonic Lumix DMCGX80, 3]
+            - [Panasonic Lumix DMCG6, Sony Alpha a7K, 4]
+            - [Panasonic Lumix DMCG6, Canon EOS M6, 3]
+            - [Panasonic Lumix DMCG6, Panasonic Lumix DMCGX800K, 1]
+            - [Panasonic Lumix DMC, Sony Alpha a6500, 1]
+            - [Panasonic Lumix DMC, Panasonic Lumix DMCGX80, 2]
+            - [Panasonic Lumix DMC, Sony Alpha a7K, 1]
+            - [Panasonic Lumix DMC, Canon EOS M6, 4]
+            - [Panasonic Lumix DMC, Panasonic Lumix DMCGX800K, 1]
+            - [Sony a6500, Panasonic Lumix DMCGX80, 5]
+            - [Sony a6500, Sony Alpha a7K, 3]
+            - [Sony a6500, Canon EOS M6, 5]
+            - [Sony a6500, Panasonic Lumix DMCGX800K, 3]
+            - [Panasonic Lumix DMCGX80, Sony Alpha a7k, 5]
+            - [Panasonic Lumix DMCGX80, Canon EOS M6, 5]
+            - [Panasonic Lumix DMCGX80, Panasonic Lumix DMCGX800K, 3]
+            - [Sony Alpha a7K, Canon EOS M6, 5]
+            - [Sony Alpha a7K, Panasonic Lumix DMCGX800K, 6]
+
+      children: *alternatives
+
+#
+# End of Goal Section
+#####################################
+
+
+
+  24.3,25600,2499,
+  16.3,25600,1739,
+  10.2,51200,10299,
+  24.3,25600,1999,
+  16,25600,2499,
+  24.3,25600,4999,
+  16,25600,3849,
+  16,25600,2449,
+  24.2,51200,4399,
+  16.84,25600,1699,
+  16,25600,2499,
+  24.3,25600,3495
